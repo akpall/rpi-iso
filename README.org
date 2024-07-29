@@ -1,0 +1,10 @@
+* What I am building?
+The idea is for flatcar linux to be able to boot over pxe and set up
+the cluster without any on-device storage. Storage will be mounted
+from nas over nfs.
+
+* What I need to do?
+** Write gentoo ebuilds for building raspberrypi-sources and raspberrypi-kernel
+** Write docker images for building arm64 kernel on either arm64 or any other ISA
+** Build flatcar linux with raspberrypi-kernel
+** Setup NAS as pxe server and setup storage on it for nfs
