@@ -47,3 +47,16 @@ stage1:
 	sed -i "s#isos#isos-qemu#g" installcd-stage1.spec
 	echo  >> installcd-stage1.spec
 	echo 'interpreter: /usr/bin/qemu-aarch64' >> installcd-stage1.spec
+
+stage2:
+	@curl -Os https://raw.githubusercontent.com/gentoo/releng/master/releases/specs/arm64/installcd-stage2-minimal.spec
+
+	TIMESTAMP=$(shell find /var/tmp/catalyst/builds/23.0-default/ -name 'stage3-$(ARCH)-openrc-*.tar.xz' | awk -F[.-] '{print $$6}')
+	TREEISH=$(shell find /var/tmp/catalyst/snapshots/ -name 'gentoo-*.sqfs' | awk -F[.-] '{print $$2}')
+	REPO_DIR=$(shell pwd)
+	sed -i "s/@TIMESTAMP@/$$TIMESTAMP/g" installcd-stage2-minimal.spec
+	sed -i "s/@TREEISH@/$$TREEISH/g" installcd-stage2-minimal.spec
+	sed -i "s#@REPO_DIR@#$$REPO_DIR/releng#g" installcd-stage2-minimal.spec
+	sed -i "s#isos#isos-qemu#g" installcd-stage2-minimal.spec
+	echo  >> installcd-stage1.spec
+	echo 'interpreter: /usr/bin/qemu-aarch64' >> installcd-stage2-minimal.spec
