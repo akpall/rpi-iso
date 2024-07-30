@@ -1,0 +1,1 @@
+Here I am developing my custom gentoo livecd for my raspberry pi pxe cluster
