@@ -79,7 +79,7 @@ ifeq ($(wildcard $(HOME)/stage2),)
 	sed -i "s/@TREEISH@/$$TREEISH/g" installcd-stage2-minimal.spec
 	sed -i "s#@REPO_DIR@#$$REPO_DIR/releng#g" installcd-stage2-minimal.spec
 	sed -i "s#isos#isos-qemu#g" installcd-stage2-minimal.spec
-	echo  >> installcd-stage2.spec
+	echo  >> installcd-stage2-minimal.spec
 	echo 'interpreter: /usr/bin/qemu-aarch64' >> installcd-stage2-minimal.spec
 	touch stage2
 endif
