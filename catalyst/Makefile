@@ -28,11 +28,9 @@ endif
 clean: check_permissions
 	rm -r releng
 	rm -r $(CATALYST_HOME)
-	rm installcd-stage1.spec
-	rm installcd-stage2-minimal.spec
+	rm stage1.spec
+	rm stage2.spec
 	rm prepare_seed
-	rm stage1
-	rm stage2
 
 prepare_seed: check_permissions
 ifeq ($(wildcard $(HOME)/prepare_seed),)
@@ -48,39 +46,37 @@ releng:
 	git clone https://github.com/gentoo/releng.git
 	rm -r $(HOME)/releng/releases/portage/isos-qemu/patches
 
-stage1-build: check_permissions stage1
-	catalyst -f installcd-stage1.spec
+stage1-build: check_permissions stage1.spec
+	catalyst -f stage1.spec
 
-stage1:	prepare_seed releng
-ifeq ($(wildcard $(HOME)/stage1),)
+stage1.spec: prepare_seed releng
+ifeq ($(wildcard $(HOME)/stage1.spec),)
 	TIMESTAMP=$(shell find /var/tmp/catalyst/builds/23.0-default/ -name 'stage3-$(ARCH)-openrc-*.tar.xz' | awk -F[.-] '{print $$6}')
 	TREEISH=$(shell find /var/tmp/catalyst/snapshots/ -name 'gentoo-*.sqfs' | awk -F[.-] '{print $$2}')
-	cp releng/releases/specs/arm64/installcd-stage1.spec $(HOME)
-	sed -i "s/@TIMESTAMP@/$$TIMESTAMP/g" installcd-stage1.spec
-	sed -i "s/@TREEISH@/$$TREEISH/g" installcd-stage1.spec
-	sed -i "s#@REPO_DIR@#$(HOME)/releng#g" installcd-stage1.spec
-	sed -i "s#isos#isos-qemu#g" installcd-stage1.spec
-	echo  >> installcd-stage1.spec
-	echo 'interpreter: /usr/bin/qemu-aarch64' >> installcd-stage1.spec
-	touch stage1
+	cp releng/releases/specs/arm64/installcd-stage1.spec $(HOME)/stage1.spec
+	sed -i "s/@TIMESTAMP@/$$TIMESTAMP/g" stage1.spec
+	sed -i "s/@TREEISH@/$$TREEISH/g" stage1.spec
+	sed -i "s#@REPO_DIR@#$(HOME)/releng#g" stage1.spec
+	sed -i "s#isos#isos-qemu#g" stage1.spec
+	echo  >> stage1.spec
+	echo 'interpreter: /usr/bin/qemu-aarch64' >> stage1.spec
 endif
 	exit 0
 
-stage2-build: check_permissions
-	catalyst -f installcd-stage2-minimal.spec
+stage2-build: check_permissions stage2.spec
+	catalyst -f stage2.spec
 
-stage2: stage1
-ifeq ($(wildcard $(HOME)/stage2),)
+stage2.spec: prepare_seed releng
+ifeq ($(wildcard $(HOME)/stage2.spec),)
 	TIMESTAMP=$(shell find /var/tmp/catalyst/builds/23.0-default/ -name 'stage3-$(ARCH)-openrc-*.tar.xz' | awk -F[.-] '{print $$6}')
 	TREEISH=$(shell find /var/tmp/catalyst/snapshots/ -name 'gentoo-*.sqfs' | awk -F[.-] '{print $$2}')
 	REPO_DIR=$(shell pwd)
-	cp releng/releases/specs/arm64/installcd-stage2-minimal.spec $(HOME)
-	sed -i "s/@TIMESTAMP@/$$TIMESTAMP/g" installcd-stage2-minimal.spec
-	sed -i "s/@TREEISH@/$$TREEISH/g" installcd-stage2-minimal.spec
-	sed -i "s#@REPO_DIR@#$$REPO_DIR/releng#g" installcd-stage2-minimal.spec
-	sed -i "s#isos#isos-qemu#g" installcd-stage2-minimal.spec
-	echo  >> installcd-stage2-minimal.spec
-	echo 'interpreter: /usr/bin/qemu-aarch64' >> installcd-stage2-minimal.spec
-	touch stage2
+	cp releng/releases/specs/arm64/installcd-stage2-minimal.spec $(HOME)/stage2.spec
+	sed -i "s/@TIMESTAMP@/$$TIMESTAMP/g" stage2.spec
+	sed -i "s/@TREEISH@/$$TREEISH/g" stage2.spec
+	sed -i "s#@REPO_DIR@#$$REPO_DIR/releng#g" stage2.spec
+	sed -i "s#isos#isos-qemu#g" stage2.spec
+	echo  >> stage2.spec
+	echo 'interpreter: /usr/bin/qemu-aarch64' >> stage2.spec
 endif
 	exit 0
