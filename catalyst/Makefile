@@ -1,6 +1,6 @@
 .ONESHELL: prepare_seed stage1 stage2
 
-.PHONY: check_dependencies check_permissions
+.PHONY: check_dependencies check_permissions clean
 
 ARCH:=arm64
 DISTFILES_URL:=https://distfiles.gentoo.org/releases/$(ARCH)/autobuilds
