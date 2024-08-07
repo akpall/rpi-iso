@@ -1,6 +1,6 @@
 .ONESHELL: prepare_seed stage1 stage2
 
-.PHONY: check_dependencies
+.PHONY: check_dependencies check_permissions
 
 ARCH:=arm64
 DISTFILES_URL:=https://distfiles.gentoo.org/releases/$(ARCH)/autobuilds
@@ -24,11 +24,11 @@ check_dependencies:
 	done
 
 check_permissions:
-ifneq ($(UID), 0)
-	echo "error: root permissions needed"
-	exit 1
-endif
-	exit 0
+	@
+	if [ $$(id -u) != 0 ]; then
+		echo "error: root permissions needed"
+		exit 1
+	fi
 
 clean: check_permissions
 	rm -r releng
