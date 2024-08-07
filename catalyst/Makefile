@@ -1,6 +1,6 @@
-.ONESHELL: prepare_seed stage1 stage2
+.ONESHELL: stage1 stage2
 
-.PHONY: check_dependencies check_permissions clean
+.PHONY: check_dependencies check_permissions clean prepare_seed
 
 ARCH:=arm64
 DISTFILES_URL:=https://distfiles.gentoo.org/releases/$(ARCH)/autobuilds
@@ -38,14 +38,16 @@ clean: check_permissions
 	rm prepare_seed
 
 prepare_seed: check_permissions
-ifeq ($(wildcard $(HOME)/prepare_seed),)
-	LATEST=$(shell curl -s $(DISTFILES_URL)/latest-stage3-$(ARCH)-openrc.txt | awk '/stage3/{print $$1}')
-	mkdir -p $(CATALYST_HOME)/builds/23.0-default
-	cd $(CATALYST_HOME)/builds/23.0-default && curl -Os $(DISTFILES_URL)/$$LATEST
-	cd $(CATALYST_HOME) && catalyst -s stable
-	touch $(HOME)/prepare_seed
-endif
-	exit 0
+	@
+	if [ ! -f prepare_seed ]; then
+		LATEST=$$(curl -s $(DISTFILES_URL)/latest-stage3-$(ARCH)-openrc.txt | awk '/stage3/{print $$1}')
+		mkdir -p $(CATALYST_HOME)/builds/23.0-default
+		cd $(CATALYST_HOME)/builds/23.0-default
+		curl -Os $(DISTFILES_URL)/"$$LATEST"
+		cd $(CATALYST_HOME)
+		catalyst -s stable
+		touch $(HOME)/prepare_seed
+	fi
 
 releng:
 	git clone https://github.com/gentoo/releng.git
