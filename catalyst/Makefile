@@ -1,5 +1,7 @@
 .ONESHELL: prepare_seed stage1 stage2
 
+.PHONY: check_dependencies
+
 ARCH:=arm64
 DISTFILES_URL:=https://distfiles.gentoo.org/releases/$(ARCH)/autobuilds
 
@@ -12,11 +14,14 @@ UID=$(shell id -u)
 build: check_dependencies stage1-build stage2-build
 
 check_dependencies:
-ifeq ($(wildcard /usr/bin/catalyst),)
-	echo "error: install catalyst"
-	exit 1
-endif
-	exit 0
+	@
+	DEP_LIST="catalyst"
+	for DEP in $${DEP_LIST}; do
+		if ! command -v "$$DEP" >/dev/null; then
+			echo "error: missing dependency $$DEP"
+			exit 1
+		fi
+	done
 
 check_permissions:
 ifneq ($(UID), 0)
