@@ -1,15 +1,9 @@
-.ONESHELL: stage1 stage2
-
-.PHONY: check_dependencies check_permissions clean prepare_seed
-
 ARCH:=arm64
 DISTFILES_URL:=https://distfiles.gentoo.org/releases/$(ARCH)/autobuilds
 
 CATALYST_HOME:=/var/tmp/catalyst
 
 HOME:=$(shell pwd)
-
-UID=$(shell id -u)
 
 build: check_dependencies stage1-build stage2-build
 
@@ -22,13 +16,15 @@ check_dependencies:
 			exit 1
 		fi
 	done
+.PHONY: check_dependencies
 
 check_permissions:
 	@
-	if [ $$(id -u) != 0 ]; then
+	if [ "$$(id -u)" != 0 ]; then
 		echo "error: root permissions needed"
 		exit 1
 	fi
+.PHONY: check_permissions
 
 clean: check_permissions
 	rm -r releng
@@ -36,6 +32,7 @@ clean: check_permissions
 	rm stage1.spec
 	rm stage2.spec
 	rm prepare_seed
+.PHONY: clean
 
 prepare_seed: check_permissions
 	@
@@ -48,6 +45,7 @@ prepare_seed: check_permissions
 		catalyst -s stable
 		touch $(HOME)/prepare_seed
 	fi
+.PHONY: prepare_seed
 
 releng:
 	git clone https://github.com/gentoo/releng.git
