@@ -3,28 +3,45 @@ DISTFILES_URL:=https://distfiles.gentoo.org/releases/$(ARCH)/autobuilds
 
 HOME:=$(shell pwd)
 
-UID=$(shell id -u)
-
-.ONESHELL: prepare_stage3
-
 build: prepare_stage3
+.PHONY: build
+
+check_dependencies:
+	@ \
+	DEP_LIST="arch-chroot qemu-aarch64"; \
+	for DEP in $${DEP_LIST}; do \
+		if ! command -v "$$DEP" >/dev/null; then \
+			echo "error: missing dependency $$DEP"; \
+			exit 1; \
+		fi \
+	done
+.PHONY: check_dependencies
 
 check_permissions:
-ifneq ($(UID), 0)
-	echo "error: root permissions needed"
-	exit 1
-endif
-	exit 0
+	@ \
+	if [ "$$(id -u)" != 0 ]; then \
+		echo "error: root permissions needed"; \
+		exit 1; \
+	fi
+.PHONY: check_permissions
 
-chroot: check_permissions
-	arch-chroot stage3
+chroot: check_permissions check_dependencies
+	@arch-chroot stage3
+.PHONY: chroot
 
 clean: check_permissions
-	rm -rf stage3
+	@rm -rf stage3
+.PHONY: clean
 
 prepare_stage3: check_permissions
-	LATEST=$(shell curl -s $(DISTFILES_URL)/latest-stage3-$(ARCH)-openrc.txt | awk '/stage3/{print $$1}')
-	TAR_NAME=$$(sed 's#^.*/##' <<< $${LATEST})
-	[ -d stage3 ] || mkdir stage3
-	cd stage3
-	[ -f $$TAR_NAME ] || (curl -Os $(DISTFILES_URL)/$$LATEST && tar xf $$TAR_NAME && cp /usr/bin/qemu-aarch64 usr/bin)
+	@ \
+	if [ ! -d stage3 ]; then \
+		LATEST=$$(curl -s $(DISTFILES_URL)/latest-stage3-$(ARCH)-openrc.txt | awk '/stage3/{print $$1}'); \
+		TAR_NAME=$$(sed 's#^.*/##' <<< $${LATEST}); \
+		mkdir stage3; \
+		cd stage3; \
+		curl -Os $(DISTFILES_URL)/$$LATEST; \
+		tar xf $$TAR_NAME; \
+		cp /usr/bin/qemu-aarch64 usr/bin; \
+	fi
+.PHONY: prepare_stage3
