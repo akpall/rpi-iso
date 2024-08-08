@@ -48,9 +48,13 @@ prepare_seed: check_permissions
 	fi
 .PHONY: prepare_seed
 
-releng:
-	git clone https://github.com/gentoo/releng.git
-	rm -r $(HOME)/releng/releases/portage/isos-qemu/patches
+releng: check_permissions
+	@ \
+	if [ ! -d releng ]; then \
+		git clone https://github.com/gentoo/releng.git; \
+		rm -r $(HOME)/releng/releases/portage/isos-qemu/patches; \
+	fi
+.PHONY: releng
 
 stage1-build: check_permissions stage1.spec
 	catalyst -f stage1.spec
