@@ -76,7 +76,8 @@ stage1.spec: prepare_seed releng
 .PHONY: stage1.spec
 
 stage2-build: check_permissions stage2.spec
-	catalyst -f stage2.spec
+	@catalyst -f stage2.spec
+.PHONY: stage2-build
 
 stage2.spec: prepare_seed releng
 ifeq ($(wildcard $(HOME)/stage2.spec),)
