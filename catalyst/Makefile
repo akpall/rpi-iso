@@ -80,16 +80,17 @@ stage2-build: check_permissions stage2.spec
 .PHONY: stage2-build
 
 stage2.spec: prepare_seed releng
-ifeq ($(wildcard $(HOME)/stage2.spec),)
-	TIMESTAMP=$(shell find /var/tmp/catalyst/builds/23.0-default/ -name 'stage3-$(ARCH)-openrc-*.tar.xz' | awk -F[.-] '{print $$6}')
-	TREEISH=$(shell find /var/tmp/catalyst/snapshots/ -name 'gentoo-*.sqfs' | awk -F[.-] '{print $$2}')
-	REPO_DIR=$(shell pwd)
-	cp releng/releases/specs/arm64/installcd-stage2-minimal.spec $(HOME)/stage2.spec
-	sed -i "s/@TIMESTAMP@/$$TIMESTAMP/g" stage2.spec
-	sed -i "s/@TREEISH@/$$TREEISH/g" stage2.spec
-	sed -i "s#@REPO_DIR@#$$REPO_DIR/releng#g" stage2.spec
-	sed -i "s#isos#isos-qemu#g" stage2.spec
-	echo  >> stage2.spec
-	echo 'interpreter: /usr/bin/qemu-aarch64' >> stage2.spec
-endif
-	exit 0
+	@ \
+	if [ ! -f stage2.spec ]; then \
+		TIMESTAMP=$(shell find /var/tmp/catalyst/builds/23.0-default/ -name 'stage3-$(ARCH)-openrc-*.tar.xz' | awk -F[.-] '{print $$6}'); \
+		TREEISH=$(shell find /var/tmp/catalyst/snapshots/ -name 'gentoo-*.sqfs' | awk -F[.-] '{print $$2}'); \
+		REPO_DIR=$(shell pwd); \
+		cp releng/releases/specs/arm64/installcd-stage2-minimal.spec $(HOME)/stage2.spec; \
+		sed -i "s/@TIMESTAMP@/$$TIMESTAMP/g" stage2.spec; \
+		sed -i "s/@TREEISH@/$$TREEISH/g" stage2.spec; \
+		sed -i "s#@REPO_DIR@#$$REPO_DIR/releng#g" stage2.spec; \
+		sed -i "s#isos#isos-qemu#g" stage2.spec; \
+		echo  >> stage2.spec; \
+		echo 'interpreter: /usr/bin/qemu-aarch64' >> stage2.spec; \
+	fi
+.PHONY: stage2.spec
