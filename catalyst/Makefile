@@ -9,21 +9,21 @@ build: check_dependencies stage1-build stage2-build
 .PHONY: build
 
 check_dependencies:
-	@
-	DEP_LIST="catalyst"
-	for DEP in $${DEP_LIST}; do
-		if ! command -v "$$DEP" >/dev/null; then
-			echo "error: missing dependency $$DEP"
-			exit 1
-		fi
+	@ \
+	DEP_LIST="catalyst"; \
+	for DEP in $${DEP_LIST}; do \
+		if ! command -v "$$DEP" >/dev/null; then \
+			echo "error: missing dependency $$DEP"; \
+			exit 1; \
+		fi \
 	done
 .PHONY: check_dependencies
 
 check_permissions:
-	@
-	if [ "$$(id -u)" != 0 ]; then
-		echo "error: root permissions needed"
-		exit 1
+	@ \
+	if [ "$$(id -u)" != 0 ]; then \
+		echo "error: root permissions needed"; \
+		exit 1; \
 	fi
 .PHONY: check_permissions
 
@@ -36,15 +36,15 @@ clean: check_permissions
 .PHONY: clean
 
 prepare_seed: check_permissions
-	@
-	if [ ! -f prepare_seed ]; then
-		LATEST=$$(curl -s $(DISTFILES_URL)/latest-stage3-$(ARCH)-openrc.txt | awk '/stage3/{print $$1}')
-		mkdir -p $(CATALYST_HOME)/builds/23.0-default
-		cd $(CATALYST_HOME)/builds/23.0-default
-		curl -Os $(DISTFILES_URL)/"$$LATEST"
-		cd $(CATALYST_HOME)
-		catalyst -s stable
-		touch $(HOME)/prepare_seed
+	@ \
+	if [ ! -f prepare_seed ]; then \
+		LATEST=$$(curl -s $(DISTFILES_URL)/latest-stage3-$(ARCH)-openrc.txt | awk '/stage3/{print $$1}'); \
+		mkdir -p $(CATALYST_HOME)/builds/23.0-default; \
+		cd $(CATALYST_HOME)/builds/23.0-default; \
+		curl -Os $(DISTFILES_URL)/"$$LATEST"; \
+		cd $(CATALYST_HOME); \
+		catalyst -s stable; \
+		touch $(HOME)/prepare_seed; \
 	fi
 .PHONY: prepare_seed
 
