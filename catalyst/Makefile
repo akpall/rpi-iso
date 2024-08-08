@@ -28,11 +28,11 @@ check_permissions:
 .PHONY: check_permissions
 
 clean: check_permissions
-	rm -r releng
-	rm -r $(CATALYST_HOME)
-	rm stage1.spec
-	rm stage2.spec
-	rm prepare_seed
+	@rm -fr releng
+	@rm -fr $(CATALYST_HOME)
+	@rm -f stage1.spec
+	@rm -f stage2.spec
+	@rm -f prepare_seed
 .PHONY: clean
 
 prepare_seed: check_permissions
