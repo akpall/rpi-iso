@@ -6,6 +6,7 @@ CATALYST_HOME:=/var/tmp/catalyst
 HOME:=$(shell pwd)
 
 build: check_dependencies stage1-build stage2-build
+.PHONY: build
 
 check_dependencies:
 	@
