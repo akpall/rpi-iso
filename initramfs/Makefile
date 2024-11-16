@@ -1,3 +1,8 @@
+.DEFAULT_GOAL := build
+
+build: root
+.PHONY: build
+
 clean:
 	rm -r root
 .PHONY: clean
