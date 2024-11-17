@@ -1,7 +1,17 @@
 .DEFAULT_GOAL := build
 
-build: root
+build: root _crossdev
 .PHONY: build
+
+/usr/aarch64-akpall-linux-musl/etc/portage/package.use: package.use
+	sudo cp package.use /usr/aarch64-akpall-linux-musl/etc/portage/
+
+/usr/bin/emerge-aarch64-akpall-linux-musl:
+	sudo crossdev -t aarch64-akpall-linux-musl
+	sudo PORTAGE_CONFIGROOT=/usr/aarch64-akpall-linux-musl/ eselect profile set default/linux/arm64/23.0/musl
+
+_crossdev: /usr/bin/emerge-aarch64-akpall-linux-musl /usr/aarch64-akpall-linux-musl/etc/portage/package.use
+.PHONY: _crossdev
 
 clean:
 	rm -r root
