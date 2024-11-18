@@ -20,7 +20,8 @@ _crossdev: /usr/bin/emerge-aarch64-akpall-linux-musl /usr/aarch64-akpall-linux-m
 _initramfs: _packages root/init initramfs.cpio.gz
 
 clean:
-	rm -r root
+	-sudo rm -r root initramfs.cpio.gz _packages
+	-sudo crossdev --clean -t aarch64-akpall-linux-musl
 .PHONY: clean
 
 initramfs.cpio.gz:
