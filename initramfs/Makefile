@@ -1,8 +1,5 @@
 .DEFAULT_GOAL := build
 
-build: root _crossdev _initramfs
-.PHONY: build
-
 /usr/aarch64-akpall-linux-musl/etc/portage/package.use: package.use
 	sudo cp package.use /usr/aarch64-akpall-linux-musl/etc/portage/
 
@@ -10,14 +7,17 @@ build: root _crossdev _initramfs
 	sudo crossdev -t aarch64-akpall-linux-musl
 	sudo PORTAGE_CONFIGROOT=/usr/aarch64-akpall-linux-musl/ eselect profile set default/linux/arm64/23.0/musl
 
-_packages:
-	sudo emerge-aarch64-akpall-linux-musl --root=root busybox
-	touch _packages
-
 _crossdev: /usr/bin/emerge-aarch64-akpall-linux-musl /usr/aarch64-akpall-linux-musl/etc/portage/package.use
 .PHONY: _crossdev
 
 _initramfs: _packages root/init initramfs.cpio.gz
+
+_packages:
+	sudo emerge-aarch64-akpall-linux-musl --root=root busybox
+	touch _packages
+
+build: root _crossdev _initramfs
+.PHONY: build
 
 clean:
 	-sudo rm -r root initramfs.cpio.gz _packages
