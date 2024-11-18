@@ -11,6 +11,7 @@ _crossdev: /usr/bin/emerge-aarch64-akpall-linux-musl /usr/aarch64-akpall-linux-m
 .PHONY: _crossdev
 
 _initramfs: _packages root/init initramfs.cpio.gz
+.PHONY: _initramfs
 
 _packages:
 	sudo emerge-aarch64-akpall-linux-musl --root=root busybox
