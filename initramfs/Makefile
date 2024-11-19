@@ -26,7 +26,7 @@ clean:
 	-sudo crossdev --clean -t aarch64-akpall-linux-musl
 .PHONY: clean
 
-initramfs.cpio.gz:
+initramfs.cpio.gz: root/init
 	(cd root && \
 		find . -print0 | \
 		cpio --null --create --verbose --format=newc | \
