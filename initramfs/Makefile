@@ -4,11 +4,9 @@
 	sudo crossdev -t aarch64-akpall-linux-musl --init-target
 	sudo PORTAGE_CONFIGROOT=/usr/aarch64-akpall-linux-musl/ eselect profile set default/linux/arm64/23.0/musl
 	sudo cp package.use /usr/aarch64-akpall-linux-musl/etc/portage/
-
-/usr/bin/emerge-aarch64-akpall-linux-musl:
 	sudo crossdev -t aarch64-akpall-linux-musl -s4
 
-_crossdev: /usr/aarch64-akpall-linux-musl/etc/portage/package.use /usr/bin/emerge-aarch64-akpall-linux-musl
+_crossdev: /usr/aarch64-akpall-linux-musl/etc/portage/package.use
 .PHONY: _crossdev
 
 _initramfs: _packages root/init initramfs.cpio.gz
