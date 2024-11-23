@@ -6,10 +6,9 @@ kernel: linux linux-config linux-make linux-firmware
 .PHONY: kernel
 
 
-linux:
-	git clone --depth 1 https://github.com/raspberrypi/linux.git || true
-	cp .config linux
-.PHONY: linux
+clean:
+	rm -rf linux
+.PHONY: clean
 
 
 linux-config:
@@ -18,23 +17,6 @@ linux-config:
 	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) bcm2712_defconfig
 .PHONY: linux-config
 
-
-linux-make-nconfig:
-	cd linux && \
-	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) nconfig && \
-	cp .config ..
-.PHONY: linux-make-nconfig
-
-
-clean:
-	rm -rf linux
-.PHONY: clean
-
-
-linux-make:
-	cd linux && \
-	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -j$$(nproc) Image.gz modules dtbs
-.PHONY: linux-make-nconfig
 
 linux-firmware:
 	cd linux && \
@@ -45,3 +27,21 @@ linux-firmware:
 	cp arch/arm64/boot/dts/overlays/*.dtb* ../firmware/overlays/ && \
 	cp arch/arm64/boot/dts/overlays/README ../firmware/overlays/
 .PHONY: linux-firmware
+
+
+linux-make-nconfig:
+	cd linux && \
+	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) nconfig && \
+	cp .config ..
+.PHONY: linux-make-nconfig
+
+
+linux-make:
+	cd linux && \
+	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -j$$(nproc) Image.gz modules dtbs
+.PHONY: linux-make-nconfig
+
+linux:
+	git clone --depth 1 https://github.com/raspberrypi/linux.git || true
+	cp .config linux
+.PHONY: linux
