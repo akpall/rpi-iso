@@ -15,14 +15,16 @@ clean:
 
 
 root/bin/busybox:
-	sudo emerge-aarch64-akpall-linux-musl --root=root busybox
+	sudo emerge-aarch64-akpall-linux-musl --oneshot --root=root busybox
 
 
 root/init: init
-	cp init root
-	chmod +x root/init
+	sudo sh -c '\
+	cp init root && \
+	chmod +x root/init'
 
 
 root:
-	mkdir --parents root/{bin,dev,etc,lib,lib64,mnt/root,proc,root,sbin,sys}
-	sudo cp --archive /dev/{null,console,tty} root/dev/
+	sudo sh -c '\
+	mkdir --parents root/{bin,dev,etc,lib,lib64,mnt/root,proc,root,sbin,sys} && \
+	cp --archive /dev/{null,console,tty} root/dev/'
