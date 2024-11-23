@@ -7,7 +7,7 @@ kernel: linux linux/.config .linux-make firmware/linux-akpall.img
 
 
 clean:
-	rm -rf linux
+	rm -rf .linux-make firmware linux
 .PHONY: clean
 
 
