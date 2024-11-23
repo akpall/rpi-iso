@@ -2,7 +2,7 @@ ARCH := arm64
 CROSS_COMPILE := aarch64-akpall-linux-musl-
 
 
-kernel: linux linux-config linux-make linux-firmware
+kernel: linux linux/.config .linux-make firmware/linux-akpall.img
 .PHONY: kernel
 
 
@@ -11,22 +11,22 @@ clean:
 .PHONY: clean
 
 
-linux-config:
+linux/.config:
+	cp .config linux
 	cd linux && \
 	KERNEL=kernel_2712 && \
 	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) bcm2712_defconfig
-.PHONY: linux-config
 
 
-linux-firmware:
-	cd linux && \
-	mkdir ../firmware && \
-	cp arch/arm64/boot/Image.gz ../firmware/linux-akpall.img && \
-	cp arch/arm64/boot/dts/broadcom/*.dtb ../firmware/ && \
-	mkdir ../firmware/overlays && \
-	cp arch/arm64/boot/dts/overlays/*.dtb* ../firmware/overlays/ && \
-	cp arch/arm64/boot/dts/overlays/README ../firmware/overlays/
-.PHONY: linux-firmware
+firmware/linux-akpall.img: .linux-make
+	if [ -d firmware ]; then \
+	rm -r firmware; \
+	fi
+	mkdir firmware firmware/overlays
+	cp linux/arch/arm64/boot/Image.gz firmware/linux-akpall.img
+	cp linux/arch/arm64/boot/dts/broadcom/*.dtb firmware/
+	cp linux/arch/arm64/boot/dts/overlays/*.dtb* firmware/overlays/
+	cp linux/arch/arm64/boot/dts/overlays/README firmware/overlays/
 
 
 linux-make-nconfig:
@@ -36,12 +36,12 @@ linux-make-nconfig:
 .PHONY: linux-make-nconfig
 
 
-linux-make:
+.linux-make: linux/.config
 	cd linux && \
 	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -j$$(nproc) Image.gz modules dtbs
+	touch .linux-make
 .PHONY: linux-make-nconfig
 
 linux:
-	git clone --depth 1 https://github.com/raspberrypi/linux.git || true
-	cp .config linux
+	-git clone --depth 1 https://github.com/raspberrypi/linux.git
 .PHONY: linux
