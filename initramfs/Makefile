@@ -19,9 +19,8 @@ root/bin/busybox:
 
 
 root/init: init
-	sudo sh -c '\
-	cp init root && \
-	chmod +x root/init'
+	cp init root
+	chmod +x root/init
 
 
 root:
