@@ -5,7 +5,7 @@ crossdev: /usr/aarch64-akpall-linux-musl/ /usr/aarch64-akpall-linux-musl/etc/por
 /usr/aarch64-akpall-linux-musl/:
 	sudo sh -c '\
 	crossdev -t aarch64-akpall-linux-musl --init-target && \
-	PORTAGE_CONFIGROOT=/usr/aarch64-akpall-linux-musl/ eselect profile set default/linux/arm64/23.0/musl'
+	PORTAGE_CONFIGROOT=/usr/aarch64-akpall-linux-musl/ eselect profile set default/linux/arm64/23.0/split-usr/musl'
 
 
 /usr/aarch64-akpall-linux-musl/etc/portage/package.use: package.use
