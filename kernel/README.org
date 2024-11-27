@@ -1,0 +1,1 @@
+Here is initramfs kernel to boot
