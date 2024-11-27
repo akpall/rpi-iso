@@ -25,6 +25,14 @@ root/init: init
 
 
 root:
-	sudo sh -c '\
-	mkdir --parents root/{bin,dev,etc,lib,lib64,mnt/root,proc,root,sbin,sys} && \
-	cp --archive /dev/{null,console,tty} root/dev/'
+	mkdir root
+	mkdir root/bin
+	mkdir root/dev
+	mkdir root/etc
+	mkdir root/lib
+	mkdir root/lib64
+	mkdir root/mnt/root
+	mkdir root/proc
+	mkdir root/root
+	mkdir root/sbin
+	mkdir root/sys
