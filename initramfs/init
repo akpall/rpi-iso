@@ -1,26 +1,28 @@
-#!/bin/busybox sh
+#!/bin/sh
 
 # Mount filesystems
 mount -t proc proc /proc
 mount -t sysfs sysfs /sys
 mount -t devtmpfs devtmpfs /dev
+mount -t tmpfs tmpfs /mnt/root
 
 # Setup dhcp
 ip link set eth0 up
 udhcpc
 
-# Open shell
-setsid cttyhack sh
+# Download and unpack image
+sh -c '\
+cd /mnt/root && \
+curl -O -k https://syno.lan:8443/stage3-arm64-openrc-20241117T233317Z.tar.xz && \
+tar -xf stage3-arm64-openrc-20241117T233317Z.tar.xz && \
+rm stage3-arm64-openrc-20241117T233317Z.tar.xz'
 
 # Unmount filesystems
 umount /proc
 umount /sys
 umount /dev
 
-# Reboot on exit
-echo "Shell exited, rebooting..."
-sleep 5
-exec /bin/busybox reboot -f
+clear
 
 # Boot the real thing.
-#exec switch_root /mnt/root /sbin/init
+exec switch_root /mnt/root /sbin/init
