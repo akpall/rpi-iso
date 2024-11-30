@@ -21,7 +21,7 @@ packages: root
 .PHONY: packages
 
 
-root/init: init
+root/init: init root
 	sudo sh -c '\
 	cp init root && \
 	chmod +x root/init'
