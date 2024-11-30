@@ -1,7 +1,7 @@
 EMERGE_OPTIONS := --oneshot --root=root --buildpkg --usepkg
+export TUPLE := aarch64-akpall-linux-musl
 export CROSSDEV := crossdev -t ${TUPLE}
 export EMERGE := emerge-${TUPLE} ${EMERGE_OPTIONS}
-export TUPLE := aarch64-akpall-linux-musl
 
 
 all: crossdev initramfs kernel
