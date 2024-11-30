@@ -1,12 +1,13 @@
-initramfs: root root/bin/busybox root/init ../initramfs.cpio.gz
+initramfs: root root/bin/busybox root/init initramfs.cpio.gz
 .PHONY: initramfs
 
 
-../initramfs.cpio.gz: root/init
-	sudo sh -c '(cd root && \
-			find . -print0 | \
-			cpio --null --create --verbose --format=newc | \
-			gzip --best) > ../initramfs.cpio.gz'
+initramfs.cpio.gz: root/init
+	sudo sh -c '\
+	(cd root && \
+	find . -print0 | \
+	cpio --null --create --verbose --format=newc | \
+	gzip --best) > initramfs.cpio.gz'
 
 
 clean:
