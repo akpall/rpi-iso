@@ -11,7 +11,8 @@ initramfs.cpio.gz: root/init
 
 
 clean:
-	-sudo rm -r root ../initramfs.cpio.gz
+	-sudo rm -r root
+	-rm initramfs.cpio.gz
 .PHONY: clean
 
 
