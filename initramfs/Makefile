@@ -1,4 +1,4 @@
-initramfs: root root/bin/busybox root/init initramfs.cpio.gz
+initramfs: root packages root/init initramfs.cpio.gz
 .PHONY: initramfs
 
 
@@ -16,8 +16,9 @@ clean:
 .PHONY: clean
 
 
-root/bin/busybox:
-	sudo emerge-aarch64-akpall-linux-musl --oneshot --root=root busybox
+packages: root
+	sudo ${EMERGE} busybox musl curl
+.PHONY: packages
 
 
 root/init: init
