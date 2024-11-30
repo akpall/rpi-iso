@@ -8,11 +8,13 @@ all: crossdev initramfs kernel
 .PHONY: all
 
 
-clean:
-	$(MAKE) -C crossdev clean
-	$(MAKE) -C initramfs clean
-	$(MAKE) -C kernel clean
+clean: crossdev-clean initramfs-clean kernel-clean
 .PHONY: clean
+
+
+crossdev-clean:
+	$(MAKE) -C crossdev clean
+.PHONY: crossdev-clean
 
 
 crossdev:
@@ -20,9 +22,19 @@ crossdev:
 .PHONY: crossdev
 
 
+initramfs-clean:
+	$(MAKE) -C initramfs clean
+.PHONY: initramfs-clean
+
+
 initramfs:
 	$(MAKE) -C initramfs
 .PHONY: initramfs
+
+
+kernel-clean:
+	$(MAKE) -C kernel clean
+.PHONY: kernel-clean
 
 
 kernel:
