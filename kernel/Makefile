@@ -2,20 +2,22 @@ ARCH := arm64
 CROSS_COMPILE := aarch64-akpall-linux-musl-
 
 
-kernel: linux linux/.config .linux-make firmware/linux-akpall.img
+kernel: linux-stable_20241008/ linux-stable_20241008/.config .linux-make firmware/linux-akpall.img
 .PHONY: kernel
 
 
 clean:
-	rm -rf .linux-make firmware linux
+	-rm -rf firmware/
+	-rm -rf linux-stable_20241008/
+	-rm .linux-make
+	-rm stable_20241008.tar.gz
 .PHONY: clean
 
 
-linux/.config:
-	cp .config linux
+.linux-make: linux-stable_20241008/.config
 	cd linux && \
-	KERNEL=kernel_2712 && \
-	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) bcm2712_defconfig
+	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -j$$(nproc) Image.gz modules dtbs
+	touch .linux-make
 
 
 firmware/linux-akpall.img: .linux-make
@@ -36,12 +38,16 @@ linux-make-nconfig:
 .PHONY: linux-make-nconfig
 
 
-.linux-make: linux/.config
-	cd linux && \
-	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -j$$(nproc) Image.gz modules dtbs
-	touch .linux-make
-.PHONY: linux-make-nconfig
+linux-stable_20241008/.config: linux-stable_20241008/
+	cp .config linux-stable_20241008/
+	cd linux-stable_20241008/ && \
+	KERNEL=kernel_2712 && \
+	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) bcm2712_defconfig
 
-linux:
-	-git clone --depth 1 https://github.com/raspberrypi/linux.git
-.PHONY: linux
+
+linux-stable_20241008/: stable_20241008.tar.gz
+	tar xf stable_20241008.tar.gz
+
+
+stable_20241008.tar.gz:
+	curl -L -O https://github.com/raspberrypi/linux/archive/refs/tags/stable_20241008.tar.gz
