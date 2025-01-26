@@ -15,7 +15,9 @@ RUN emerge --getbinpkg --jobs=$(nproc) --load-average=$((1+$(nproc))) dev-util/c
 RUN mkdir -p /var/tmp/catalyst/builds/default
 
 RUN wget https://distfiles.gentoo.org/releases/arm64/autobuilds/current-stage3-arm64-openrc/latest-stage3-arm64-openrc.txt
-RUN wget "https://distfiles.gentoo.org/releases/arm64/autobuilds/current-stage3-arm64-openrc/$(awk /stage3/'{print $1}' latest-stage3-arm64-openrc.txt)" -O "/var/tmp/catalyst/builds/default/stage3-arm64-openrc-latest.tar.xz"
+
+RUN STAGE3_DATE=$(awk /stage3/'{print $1}' latest-stage3-arm64-openrc.txt)
+RUN wget "https://distfiles.gentoo.org/releases/arm64/autobuilds/current-stage3-arm64-openrc/${STAGE3_DATE}" -O /var/tmp/catalyst/builds/default/stage3-arm64-openrc-latest.tar.xz
 
 # doesn't work https://bugs.gentoo.org/829214
 #RUN catalyst --snapshot stable
