@@ -1,5 +1,5 @@
 catalyst:
-	docker build --pull --tag catalyst-akpall .
+	docker build --pull --tag=catalyst-akpall --platform=linux/arm64 .
 
 spec-files:
 	wget https://gitweb.gentoo.org/proj/releng.git/plain/releases/specs/arm64/stage1-openrc-23.spec -O files/stage1-openrc-23.spec
