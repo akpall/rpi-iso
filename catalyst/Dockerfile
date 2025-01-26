@@ -24,3 +24,5 @@ RUN wget https://distfiles.gentoo.org/snapshots/squashfs/gentoo-current.xz.sqfs 
 
 ADD files/stage1-openrc-23.spec /
 ADD files/stage3-openrc-23.spec /
+
+ADD files/releng /var/tmp/catalyst/releng
