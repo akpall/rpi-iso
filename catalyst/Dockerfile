@@ -19,5 +19,5 @@ RUN wget https://distfiles.gentoo.org/releases/arm64/autobuilds/current-stage3-a
 RUN STAGE3_DATE=$(awk /stage3/'{print $1}' latest-stage3-arm64-openrc.txt)
 RUN wget "https://distfiles.gentoo.org/releases/arm64/autobuilds/current-stage3-arm64-openrc/${STAGE3_DATE}" -O /var/tmp/catalyst/builds/default/stage3-arm64-openrc-latest.tar.xz
 
-# doesn't work https://bugs.gentoo.org/829214
-#RUN catalyst --snapshot stable
+RUN mkdir -p /var/tmp/catalyst/snapshots
+RUN wget https://distfiles.gentoo.org/snapshots/squashfs/gentoo-current.xz.sqfs -O /var/tmp/catalyst/snapshots/gentoo-current.xz.sqfs
