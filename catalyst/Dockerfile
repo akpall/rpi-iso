@@ -21,7 +21,6 @@ RUN emerge --getbinpkg --jobs=$(nproc) --load-average=$((1+$(nproc))) dev-util/c
 RUN wget https://distfiles.gentoo.org/releases/arm64/autobuilds/current-stage3-arm64-openrc/latest-stage3-arm64-openrc.txt
 
 RUN STAGE3_DATE=$(awk /stage3/'{print $1}' latest-stage3-arm64-openrc.txt)
-RUN wget "https://distfiles.gentoo.org/releases/arm64/autobuilds/current-stage3-arm64-openrc/${STAGE3_DATE}" -O /var/tmp/catalyst/builds/default/stage3-arm64-openrc-latest.tar.xz
+RUN wget https://distfiles.gentoo.org/releases/arm64/autobuilds/current-stage3-arm64-openrc/"${STAGE3_DATE}" -O /var/tmp/catalyst/builds/23.0-default/stage3-arm64-openrc-latest.tar.xz
 
 RUN wget https://distfiles.gentoo.org/snapshots/squashfs/gentoo-current.xz.sqfs -O /var/tmp/catalyst/snapshots/gentoo-current.xz.sqfs
-
