@@ -21,3 +21,6 @@ RUN wget "https://distfiles.gentoo.org/releases/arm64/autobuilds/current-stage3-
 
 RUN mkdir -p /var/tmp/catalyst/snapshots
 RUN wget https://distfiles.gentoo.org/snapshots/squashfs/gentoo-current.xz.sqfs -O /var/tmp/catalyst/snapshots/gentoo-current.xz.sqfs
+
+ADD files/stage1-openrc-23.spec /
+ADD files/stage3-openrc-23.spec /
