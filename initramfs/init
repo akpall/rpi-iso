@@ -8,6 +8,7 @@ mount -t sysfs sysfs /sys
 mount -t devtmpfs devtmpfs /dev
 
 # Create directories
+mkdir /mnt/iso
 mkdir /mnt/root
 
 # Setup dhcp
@@ -16,7 +17,8 @@ udhcpc
 
 # Download and unpack image
 curl -O -k https://syno.lan:8443/${IMAGE}
-mount -o loop ${IMAGE} /mnt/root
+mount -o loop ${IMAGE} /mnt/iso
+mount --bind /mnt/iso /mnt/root
 
 # Unmount filesystems
 umount /proc
