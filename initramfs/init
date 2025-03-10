@@ -18,7 +18,7 @@ udhcpc
 # Download and unpack image
 curl -O -k https://syno.lan:8443/${IMAGE}
 mount -o loop ${IMAGE} /mnt/iso
-mount --bind /mnt/iso /mnt/root
+cp -a /mnt/iso/* /mnt/root
 
 # Unmount filesystems
 umount /proc
