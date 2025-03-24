@@ -1,4 +1,4 @@
-all: .scripts .build_packages .build_image .image_to_vm flatcar_production_iso_image.iso
+all: scripts .build_packages .build_image .image_to_vm flatcar_production_iso_image.iso
 
 .build_image: .build_packages
 	@ \
@@ -6,7 +6,7 @@ all: .scripts .build_packages .build_image .image_to_vm flatcar_production_iso_i
 	./run_sdk_container ./build_image --board=arm64-usr; \
 	touch .build_image
 
-.build_packages: .scripts
+.build_packages: scripts
 	@ \
 	cd scripts; \
 	./run_sdk_container ./build_packages --board=arm64-usr; \
