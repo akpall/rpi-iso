@@ -1,14 +1,14 @@
 all: .scripts .build_packages .build_image .image_to_vm flatcar_production_iso_image.iso
 
-.scripts:
-	@git clone https://github.com/flatcar/scripts.git
-
+scripts:
 	@ \
+	[[ ! -d scripts ]] && git clone https://github.com/flatcar/scripts.git; \
 	cd scripts; \
+	git fetch; \
 	branch="$$(git branch -r -l | awk -F'/' '/origin\/flatcar-[0-9]+$$/ {print $$2}' | sort | tail -n1)"; \
-	git checkout "$$branch"
-
-	@touch .scripts
+	git checkout "$$branch"; \
+	git merge --ff-only
+.PHONY: scripts
 
 .build_packages: .scripts
 	@ \
