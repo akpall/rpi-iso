@@ -13,23 +13,20 @@ scripts:
 .build_packages: .scripts
 	@ \
 	cd scripts; \
-	./run_sdk_container ./build_packages --board=arm64-usr
-
-	@touch .build_packages
+	./run_sdk_container ./build_packages --board=arm64-usr; \
+	touch .build_packages
 
 .build_image: .build_packages
 	@ \
 	cd scripts; \
-	./run_sdk_container ./build_image --board=arm64-usr
-
-	@touch .build_image
+	./run_sdk_container ./build_image --board=arm64-usr; \
+	touch .build_image
 
 .image_to_vm: .build_image
 	@ \
 	cd scripts; \
-	./run_sdk_container ./image_to_vm.sh --from=../build/images/arm64-usr/latest/ --format=iso --board=arm64-usr
-
-	@touch .image_to_vm
+	./run_sdk_container ./image_to_vm.sh --from=../build/images/arm64-usr/latest/ --format=iso --board=arm64-usr; \
+	touch .image_to_vm
 
 flatcar_production_iso_image.iso: .image_to_vm
 	cp scripts/__build__/images/images/arm64-usr/latest/flatcar_production_iso_image.iso .
