@@ -1,21 +1,23 @@
+BOARD := arm64-usr
+
 all: scripts .build_packages .build_image .image_to_vm flatcar_production_iso_image.iso
 
 .build_image: .build_packages
 	@ \
 	cd scripts; \
-	./run_sdk_container ./build_image --board=arm64-usr; \
+	./run_sdk_container ./build_image --board=${BOARD}; \
 	touch .build_image
 
 .build_packages: scripts
 	@ \
 	cd scripts; \
-	./run_sdk_container ./build_packages --board=arm64-usr; \
+	./run_sdk_container ./build_packages --board=${BOARD}; \
 	touch .build_packages
 
 .image_to_vm: .build_image
 	@ \
 	cd scripts; \
-	./run_sdk_container ./image_to_vm.sh --from=../build/images/arm64-usr/latest/ --format=iso --board=arm64-usr; \
+	./run_sdk_container ./image_to_vm.sh --from=../build/images/${BOARD}/latest/ --format=iso --board=${BOARD}; \
 	touch .image_to_vm
 
 clean:
@@ -30,7 +32,7 @@ clean:
 .PHONY: clean
 
 flatcar_production_iso_image.iso: .image_to_vm
-	cp scripts/__build__/images/images/arm64-usr/latest/flatcar_production_iso_image.iso .
+	cp scripts/__build__/images/images/${BOARD}/latest/flatcar_production_iso_image.iso .
 
 scripts:
 	@ \
