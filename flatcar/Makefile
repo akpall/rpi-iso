@@ -3,20 +3,20 @@ all: scripts .build_packages .build_image .image_to_vm flatcar_production_iso_im
 .build_image: .build_packages
 	@ \
 	cd scripts; \
-	./run_sdk_container ./build_image --board=${BOARD}; \
-	touch .build_image
+	./run_sdk_container ./build_image --board=${BOARD}
+.PHONY: .build_image
 
 .build_packages: scripts
 	@ \
 	cd scripts; \
-	./run_sdk_container ./build_packages --board=${BOARD}; \
-	touch .build_packages
+	./run_sdk_container ./build_packages --board=${BOARD}
+.PHONY: .build_packages
 
 .image_to_vm: .build_image
 	@ \
 	cd scripts; \
-	./run_sdk_container ./image_to_vm.sh --from=../build/images/${BOARD}/latest/ --format=iso --board=${BOARD}; \
-	touch .image_to_vm
+	./run_sdk_container ./image_to_vm.sh --from=../build/images/${BOARD}/latest/ --format=iso --board=${BOARD}
+.PHONY: .image_to_vm
 
 amd64-usr:
 	$(MAKE) BOARD=amd64-usr flatcar_production_iso_image.iso
