@@ -51,3 +51,7 @@ linux-stable_20241008/: stable_20241008.tar.gz
 
 stable_20241008.tar.gz:
 	curl -L -O https://github.com/raspberrypi/linux/archive/refs/tags/stable_20241008.tar.gz
+
+arm64-kernel:
+	docker buildx build --tag arm64-kernel --platform linux/arm64 .
+.PHONY: arm64-kernel

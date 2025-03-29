@@ -1,0 +1,3 @@
+FROM gentoo/stage3:arm64
+
+RUN curl -L -O https://github.com/raspberrypi/linux/archive/refs/tags/stable_20241008.tar.gz
