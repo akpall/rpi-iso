@@ -1,57 +1,30 @@
 ARCH := arm64
-CROSS_COMPILE := aarch64-akpall-linux-musl-
+VERSION := 20250127
 
-
-kernel: linux-stable_20241008/ linux-stable_20241008/.config .linux-make firmware/linux-akpall.img
-.PHONY: kernel
-
+rpi5-kernel:
+	case $$(uname -m) in \
+		x86_64) \
+			PLATFORM=amd64 \
+			;; \
+		aarch64) \
+			PLATFORM=arm64 \
+			;; \
+	esac; \
+	docker build \
+		--build-arg ARCH=$${PLATFORM} \
+		--build-arg VERSION=${VERSION} \
+		--tag rpi5-kernel \
+		--platform linux/$$PLATFORM \
+		.
+	docker create --name rpi5-kernel rpi5-kernel .
+	docker cp rpi5-kernel:boot .
+	docker cp rpi5-kernel:root .
+	docker rm rpi5-kernel
+.PHONY: rpi5-kernel
 
 clean:
-	-rm -rf firmware/
-	-rm -rf linux-stable_20241008/
-	-rm .linux-make
-	-rm stable_20241008.tar.gz
+	@ ( \
+	rm -r boot; \
+	rm -r root; \
+	) 2>/dev/null || true
 .PHONY: clean
-
-
-.linux-make: linux-stable_20241008/.config
-	cd linux && \
-	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -j$$(nproc) Image.gz modules dtbs
-	touch .linux-make
-
-
-firmware/linux-akpall.img: .linux-make
-	if [ -d firmware ]; then \
-	rm -r firmware; \
-	fi
-	mkdir firmware firmware/overlays
-	cp linux/arch/arm64/boot/Image.gz firmware/linux-akpall.img
-	cp linux/arch/arm64/boot/dts/broadcom/*.dtb firmware/
-	cp linux/arch/arm64/boot/dts/overlays/*.dtb* firmware/overlays/
-	cp linux/arch/arm64/boot/dts/overlays/README firmware/overlays/
-
-
-linux-make-nconfig:
-	cd linux && \
-	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) nconfig && \
-	cp .config ..
-.PHONY: linux-make-nconfig
-
-
-linux-stable_20241008/.config: linux-stable_20241008/
-	cp .config linux-stable_20241008/
-	cd linux-stable_20241008/ && \
-	KERNEL=kernel_2712 && \
-	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) bcm2712_defconfig
-
-
-linux-stable_20241008/: stable_20241008.tar.gz
-	tar xf stable_20241008.tar.gz
-
-
-stable_20241008.tar.gz:
-	curl -L -O https://github.com/raspberrypi/linux/archive/refs/tags/stable_20241008.tar.gz
-
-arm64-kernel:
-	docker buildx build --tag arm64-kernel --platform linux/arm64 .
-.PHONY: arm64-kernel
