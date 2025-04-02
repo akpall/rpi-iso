@@ -1,19 +1,20 @@
-crossdev: /usr/aarch64-akpall-linux-musl/ /usr/aarch64-akpall-linux-musl/etc/portage/package.use
-.PHONY: crossdev
+ARCH := $(shell uname -m)
+ifeq ($(ARCH),x86_64)
+	PLATFORM=amd64
+else
+	PLATFORM=arm64
+endif
+
+VERSION := 20250127
 
 
-/usr/aarch64-akpall-linux-musl/:
-	sudo sh -c '\
-	${CROSSDEV} --init-target && \
-	PORTAGE_CONFIGROOT=/usr/aarch64-akpall-linux-musl/ eselect profile set default/linux/arm64/23.0/split-usr/musl'
-
-
-/usr/aarch64-akpall-linux-musl/etc/portage/package.use: package.use
-	sudo sh -c '\
-	cp package.use /usr/aarch64-akpall-linux-musl/etc/portage/ && \
-	${CROSSDEV} -s4'
-
+rpi5-crossdev:
+	docker build \
+		--tag rpi5-crossdev \
+		--platform linux/${PLATFORM} \
+		.
+.PHONY: rpi5-crossdev
 
 clean:
-	-sudo crossdev --clean -t ${TUPLE}
+	docker image rpi5-crossdev
 .PHONY: clean

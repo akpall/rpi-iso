@@ -15,8 +15,8 @@ rpi5-kernel:
 		--platform linux/${PLATFORM} \
 		.
 	docker create --name rpi5-kernel rpi5-kernel .
-	docker cp rpi5-kernel:boot .
-	docker cp rpi5-kernel:root .
+	docker cp rpi5-kernel:root/boot .
+	docker cp rpi5-kernel:root/root .
 	docker rm rpi5-kernel
 .PHONY: rpi5-kernel
 
@@ -25,4 +25,5 @@ clean:
 	rm -r boot; \
 	rm -r root; \
 	) 2>/dev/null || true
+	docker image rm rpi5-kernel
 .PHONY: clean
