@@ -1,3 +1,11 @@
+ARCH := $(shell uname -m)
+ifeq ($(ARCH),x86_64)
+	PLATFORM=amd64
+else
+	PLATFORM=arm64
+endif
+
+
 initramfs: root packages root/init initramfs.cpio.gz
 .PHONY: initramfs
 
@@ -27,17 +35,11 @@ root/init: init root
 	chmod +x root/init'
 
 
-root:
-	sudo sh -c '\
-	mkdir root && \
-	mkdir root/bin && \
-	mkdir root/dev && \
-	mkdir root/etc && \
-	mkdir root/lib && \
-	mkdir root/lib64 &&\
-	mkdir root/mnt && \
-	mkdir root/mnt/root && \
-	mkdir root/proc && \
-	mkdir root/root && \
-	mkdir root/sbin && \
-	mkdir root/sys'
+rpi5-initramfs:
+	docker build \
+		--build-arg ARCH=${PLATFORM} \
+		--build-arg VERSION=${VERSION} \
+		--tag rpi5-initramfs \
+		--platform linux/${PLATFORM} \
+		.
+.PHONY: rpi5-initramfs
