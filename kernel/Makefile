@@ -1,20 +1,18 @@
-ARCH := arm64
+ARCH := $(shell uname -m)
+ifeq ($(ARCH),x86_64)
+	PLATFORM=amd64
+else
+	PLATFORM=arm64
+endif
+
 VERSION := 20250127
 
 rpi5-kernel:
-	case $$(uname -m) in \
-		x86_64) \
-			PLATFORM=amd64 \
-			;; \
-		aarch64) \
-			PLATFORM=arm64 \
-			;; \
-	esac; \
 	docker build \
-		--build-arg ARCH=$${PLATFORM} \
+		--build-arg ARCH=${PLATFORM} \
 		--build-arg VERSION=${VERSION} \
 		--tag rpi5-kernel \
-		--platform linux/$$PLATFORM \
+		--platform linux/${PLATFORM} \
 		.
 	docker create --name rpi5-kernel rpi5-kernel .
 	docker cp rpi5-kernel:boot .
