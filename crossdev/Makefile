@@ -20,5 +20,5 @@ rpi5-crossdev:
 
 clean:
 	docker image rm rpi5-crossdev
-	docker image prune
+	docker image prune -f
 .PHONY: clean
