@@ -16,6 +16,9 @@ rpi5-kernel:
 		--tag rpi5-kernel \
 		--platform linux/${PLATFORM} \
 		.
+	docker create --name rpi5-kernel rpi5-kernel /dev/null
+	docker cp rpi5-kernel:/root/kernel/ .
+	docker rm rpi5-kernel
 .PHONY: rpi5-kernel
 
 clean:
