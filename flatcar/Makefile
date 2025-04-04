@@ -1,6 +1,6 @@
 BOARD := arm64-usr
 
-all: scripts .build_packages .build_image .image_to_vm flatcar_production_iso_image.iso
+all: scripts .build_packages .build_image .image_to_vm flatcar_production_pxe_image.cpio.gz
 
 .build_image: .build_packages
 	@ \
@@ -17,7 +17,7 @@ all: scripts .build_packages .build_image .image_to_vm flatcar_production_iso_im
 .image_to_vm: .build_image
 	@ \
 	cd scripts; \
-	./run_sdk_container ./image_to_vm.sh --from=../build/images/${BOARD}/latest/ --format=iso --board=${BOARD}
+	./run_sdk_container ./image_to_vm.sh --from=../build/images/${BOARD}/latest/ --format=pxe --board=${BOARD}
 .PHONY: .image_to_vm
 
 clean:
@@ -31,8 +31,8 @@ clean:
 	) 2>/dev/null
 .PHONY: clean
 
-flatcar_production_iso_image.iso: .image_to_vm
-	cp scripts/__build__/images/images/${BOARD}/latest/flatcar_production_iso_image.iso .
+flatcar_production_pxe_image.cpio.gz: .image_to_vm
+	cp scripts/__build__/images/images/${BOARD}/latest/flatcar_production_pxe_image.cpio.gz .
 
 scripts:
 	@ \
