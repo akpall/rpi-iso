@@ -1,3 +1,6 @@
+export MAKEFLAGS += --jobs=$(shell nproc)
+export MAKEFLAGS += --load-average=$(shell echo $$((1+$$(nproc))))
+
 all: flatcar initramfs kernel
 
 flatcar:
