@@ -24,8 +24,10 @@ RUN mkdir -p \
     initramfs/sbin \
     initramfs/sys
 
-RUN emerge-aarch64-linux-gnu ${EMERGE_OPTIONS} sys-apps/busybox
-RUN emerge-aarch64-linux-gnu ${EMERGE_OPTIONS} net-misc/curl
+RUN emerge-aarch64-linux-gnu ${EMERGE_OPTIONS} \
+    net-misc/curl \
+    sys-apps/busybox \
+    sys-libs/glibc
 
 COPY init initramfs
 RUN chmod +x initramfs/init
