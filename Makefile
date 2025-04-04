@@ -1,3 +1,9 @@
+all: flatcar initramfs kernel
+
+flatcar:
+	$(MAKE) -C flatcar
+.PHONY: flatcar
+
 initramfs: kernel
 	$(MAKE) -C initramfs
 .PHONY: initramfs
