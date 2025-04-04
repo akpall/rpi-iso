@@ -1,25 +1,29 @@
 #!/bin/sh
 
-IMAGE="flatcar_production_iso_image.iso"
+IMAGE="flatcar_production_pxe_image.cpio.gz"
 
-# Create directories
-mkdir /mnt/iso
-mkdir /mnt/root
+mkdir /mnt/image/
+mkdir /mnt/root/
 
 # Mount filesystems
 mount -t proc none /proc
 mount -t sysfs none /sys
 mount -t devtmpfs none /dev
-mount -t tmpfs none /mnt/root
+
+# Load modules
+modprobe squashfs
 
 # Setup dhcp
 ip link set eth0 up
 udhcpc
 
 # Download and unpack image
-curl -O -k https://syno.lan:8443/${IMAGE}
-mount -o loop ${IMAGE} /mnt/iso
-cp -a /mnt/iso/* /mnt/root
+(cd /mnt/ && \
+     curl -O -k https://syno.lan:8443/${IMAGE} && \
+     cd image/ && \
+     gunzip -c ../${IMAGE} | cpio -id && \
+     cd .. && \
+     mount -t squashfs image/usr.squashfs root/)
 
 # Unmount filesystems
 umount /proc
