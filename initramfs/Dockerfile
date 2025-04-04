@@ -32,7 +32,7 @@ RUN chmod +x initramfs/init
 
 COPY --from=rpi5-kernel /root/kernel/lib initramfs/lib
 
-RUN (cd root; \
+RUN (cd initramfs; \
     find . -print0 | \
     cpio --null --create --verbose --format=newc | \
     gzip --best) \
