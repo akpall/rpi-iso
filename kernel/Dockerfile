@@ -34,10 +34,3 @@ RUN cd linux-stable_${VERSION}; \
     cp arch/arm64/boot/dts/broadcom/*.dtb ../kernel/boot/; \
     cp arch/arm64/boot/dts/overlays/*.dtb* ../kernel/boot/overlays/; \
     cp arch/arm64/boot/dts/overlays/README ../kernel/boot/overlays/;
-
-FROM scratch
-
-ARG VERSION
-
-COPY --from=rpi5-crossdev /root/kernel/ /root/kernel
-COPY --from=rpi5-crossdev /root/linux-stable_${VERSION}/.config /root/.config
