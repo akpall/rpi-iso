@@ -18,7 +18,7 @@ rpi5-kernel:
 		.
 	docker create --name rpi5-kernel rpi5-kernel /dev/null
 	docker cp rpi5-kernel:/root/kernel/ .
-	docker cp rpi5-kernel:/root/.config .
+	docker cp rpi5-kernel:/root/linux-stable_${VERSION}/.config .
 	docker rm rpi5-kernel
 .PHONY: rpi5-kernel
 
