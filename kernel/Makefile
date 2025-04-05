@@ -20,6 +20,7 @@ rpi5-kernel:
 	docker cp rpi5-kernel:/root/kernel/ .
 	docker cp rpi5-kernel:/root/linux-stable_${VERSION}/.config .
 	docker rm rpi5-kernel
+	docker image prune -f
 .PHONY: rpi5-kernel
 
 clean:

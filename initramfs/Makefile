@@ -17,6 +17,7 @@ rpi5-initramfs:
 	docker create --name rpi5-initramfs rpi5-initramfs
 	docker cp rpi5-initramfs:/root/initramfs.cpio.gz .
 	docker rm rpi5-initramfs
+	docker image prune -f
 .PHONY: rpi5-initramfs
 
 clean:

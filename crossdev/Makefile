@@ -16,6 +16,7 @@ rpi5-crossdev:
 		--tag rpi5-crossdev \
 		--platform linux/${PLATFORM} \
 		.
+	docker image prune -f
 .PHONY: rpi5-crossdev
 
 clean:
