@@ -32,7 +32,7 @@ rpi5-kernel-nconfig:
 		--name rpi5-kernel-nconfig \
 		--rm \
 		--tty \
-		--workdir /tmp/linux-stable_${VERSION} \
+		--workdir /root/linux-stable_${VERSION} \
 		rpi5-kernel \
 		sh -c "if [[ -e config ]]; then \
 			  cat config > .config; \
