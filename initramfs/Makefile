@@ -24,5 +24,6 @@ clean:
 	( \
 	docker image rm rpi5-initramfs && \
 	docker image prune -f; \
+	rm initramfs.cpio.gz; \
 	) >/dev/null 2>&1 || true
 .PHONY: clean
