@@ -44,6 +44,7 @@ clean:
 	( \
 	docker image rm rpi5-kernel && \
 	docker image prune -f; \
+	rm -r kernel; \
 	) >/dev/null 2>&1 || true
 .PHONY: clean
 
