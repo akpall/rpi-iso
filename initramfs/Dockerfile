@@ -1,5 +1,4 @@
 FROM rpi5-kernel AS rpi5-kernel
-FROM rpi5-crossdev AS rpi5-crossdev
 
 WORKDIR /root/
 
@@ -16,13 +15,14 @@ RUN mkdir -p \
     initramfs/bin \
     initramfs/dev \
     initramfs/etc \
-    initramfs/lib \
     initramfs/lib64\
     initramfs/mnt/root \
     initramfs/proc \
     initramfs/root \
     initramfs/sbin \
     initramfs/sys
+
+RUN cp -r /root/kernel/lib/ initramfs/
 
 RUN emerge-aarch64-linux-gnu ${EMERGE_OPTIONS} \
     net-misc/curl \
@@ -32,8 +32,6 @@ RUN emerge-aarch64-linux-gnu ${EMERGE_OPTIONS} \
 
 COPY init initramfs
 RUN chmod +x initramfs/init
-
-COPY --from=rpi5-kernel /root/kernel/lib initramfs/lib
 
 RUN (cd initramfs; \
     find . -print0 | \
