@@ -19,8 +19,12 @@ crossdev:
 	$(MAKE) -C crossdev
 .PHONY: crossdev
 
-clean: crossdev-clean initramfs-clean kernel-clean
+clean: flatcar-clean crossdev-clean initramfs-clean kernel-clean
 .PHONY: clean
+
+flatcar-clean:
+	$(MAKE) -C flatcar clean
+.PHONY: flatcar-clean
 
 crossdev-clean:
 	$(MAKE) -C crossdev clean
