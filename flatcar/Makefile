@@ -21,14 +21,14 @@ all: scripts .build_packages .build_image .image_to_vm flatcar_production_pxe_im
 .PHONY: .image_to_vm
 
 clean:
-	-@ ( \
+	( \
 	rm -rf scripts; \
 	rm .scripts; \
 	rm .build_packages; \
 	rm .build_image; \
 	rm .image_to_vm; \
 	rm flatcar_production_iso_image.iso; \
-	) 2>/dev/null
+	) >/dev/null 2>&1 || true
 .PHONY: clean
 
 flatcar_production_pxe_image.cpio.gz: .image_to_vm
