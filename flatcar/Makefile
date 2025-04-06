@@ -27,7 +27,7 @@ clean:
 	rm .build_packages; \
 	rm .build_image; \
 	rm .image_to_vm; \
-	rm flatcar_production_iso_image.iso; \
+	rm flatcar_production_pxe_image.cpio.gz; \
 	) >/dev/null 2>&1 || true
 .PHONY: clean
 
