@@ -27,6 +27,7 @@ RUN mkdir -p \
 RUN emerge-aarch64-linux-gnu ${EMERGE_OPTIONS} \
     net-misc/curl \
     sys-apps/busybox \
+    sys-apps/kexec-tools \
     sys-libs/glibc
 
 COPY init initramfs

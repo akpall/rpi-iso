@@ -1,36 +1,24 @@
 #!/bin/sh
 
-IMAGE="flatcar_production_pxe_image.cpio.gz"
-
-mkdir /mnt/image/
-mkdir /mnt/root/
+KERNEL="kernel_2712.img"
+INITRD="flatcar_production_pxe_image.cpio.gz"
 
 # Mount filesystems
 mount -t proc none /proc
 mount -t sysfs none /sys
 mount -t devtmpfs none /dev
 
-# Load modules
-modprobe squashfs
-
 # Setup dhcp
 ip link set eth0 up
 udhcpc
 
 # Download and unpack image
-(cd /mnt/ && \
-     curl -O -k https://syno.lan:8443/${IMAGE} && \
-     cd image/ && \
-     gunzip -c ../${IMAGE} | cpio -id && \
-     cd .. && \
-     mount -t squashfs image/usr.squashfs root/)
-
-# Unmount filesystems
-umount /proc
-umount /sys
-umount /dev
+cd /mnt/
+curl -O -k https://syno.lan:8443/${KERNEL}
+curl -O -k https://syno.lan:8443/${INITRD}
+kexec -l ${KERNEL} --initrd=${INITRD} --append="$(cat /proc/cmdline)"
 
 clear
 
 # Boot the real thing.
-exec switch_root /mnt/root /sbin/init
+kexec -e
