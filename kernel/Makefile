@@ -34,7 +34,9 @@ rpi5-kernel-nconfig:
 		--tty \
 		--workdir /tmp/linux-stable_${VERSION} \
 		rpi5-kernel \
-		sh -c "cat config > .config || true; \
+		sh -c "if [[ -e config ]]; then \
+			  cat config > .config; \
+			fi; \
 			make ${IF_CROSS_COMPILATION_FLAGS} nconfig && \
 			cat .config > config"
 
