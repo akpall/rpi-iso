@@ -1,6 +1,6 @@
 BOARD := arm64-usr
 
-all: scripts .build_packages .build_image .image_to_vm flatcar_production_pxe_image.cpio.gz
+all: scripts .build_packages .build_image .image_to_vm flatcar_production_pxe_image.cpio.gz flatcar_production_pxe.vmlinuz
 
 .build_image: .build_packages
 	@ \
@@ -33,6 +33,9 @@ clean:
 
 flatcar_production_pxe_image.cpio.gz: .image_to_vm
 	cp scripts/__build__/images/images/${BOARD}/latest/flatcar_production_pxe_image.cpio.gz .
+
+flatcar_production_pxe.vmlinuz: .image_to_vm
+	cp scripts/__build__/images/images/${BOARD}/latest/flatcar_production_pxe.vmlinuz .
 
 scripts:
 	@ \
