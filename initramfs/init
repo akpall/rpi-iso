@@ -1,6 +1,6 @@
 #!/bin/sh
 
-KERNEL="kernel_2712.img"
+KERNEL="flatcar_production_pxe.vmlinuz"
 INITRD="flatcar_production_pxe_image.cpio.gz"
 
 # Mount filesystems
@@ -16,7 +16,9 @@ udhcpc
 cd /mnt/
 curl -O -k https://syno.lan:8443/${KERNEL}
 curl -O -k https://syno.lan:8443/${INITRD}
-kexec -l ${KERNEL} --initrd=${INITRD} --append="$(cat /proc/cmdline)"
+kexec -l ${KERNEL} \
+      --initrd=${INITRD} \
+      --append=$(echo "flatcar.first_boot=1 ignition.config.url=https://syno.lan/pxe-config.ign")
 
 clear
 
