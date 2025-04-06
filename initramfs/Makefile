@@ -21,6 +21,8 @@ rpi5-initramfs:
 .PHONY: rpi5-initramfs
 
 clean:
-	docker image rm rpi5-initramfs >/dev/null 2>&1 || true
-	docker image prune -f
+	( \
+	docker image rm rpi5-initramfs && \
+	docker image prune -f; \
+	) >/dev/null 2>&1 || true
 .PHONY: clean
