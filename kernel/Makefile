@@ -28,7 +28,7 @@ rpi5-kernel: config
 rpi5-kernel-nconfig:
 	docker run \
 		--interactive \
-		--mount type=bind,src=./config,dst=/tmp/linux-stable_${VERSION}/config \
+		--mount type=bind,src=./config,dst=/root/linux-stable_${VERSION}/config \
 		--name rpi5-kernel-nconfig \
 		--rm \
 		--tty \
