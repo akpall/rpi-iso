@@ -20,6 +20,6 @@ rpi5-crossdev:
 .PHONY: rpi5-crossdev
 
 clean:
-	docker image rm rpi5-crossdev
+	docker image rm rpi5-crossdev >/dev/null 2>&1
 	docker image prune -f
 .PHONY: clean

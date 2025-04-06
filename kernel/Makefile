@@ -41,7 +41,7 @@ rpi5-kernel-nconfig:
 			cat .config > config"
 
 clean:
-	docker image rm rpi5-kernel
+	docker image rm rpi5-kernel >/dev/null 2>&1
 	docker image prune -f
 .PHONY: clean
 
