@@ -1,0 +1,2 @@
+kernel=kernel_2712.img
+initramfs initramfs.cpio.gz followkernel
