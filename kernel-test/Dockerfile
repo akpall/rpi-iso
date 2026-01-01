@@ -14,7 +14,6 @@ RUN emerge \
       app-eselect/eselect-repository
 
 RUN eselect repository add akpall git https://github.com/akpall/gentoo-akpall
-RUN emaint sync --repo akpall
 
 # raspberrypi-sources::akpall dependencies
 RUN emerge \
@@ -25,3 +24,5 @@ RUN emerge \
       virtual/libelf \
       app-arch/cpio \
       app-alternatives/cpio
+
+CMD emaint sync --repo akpall
