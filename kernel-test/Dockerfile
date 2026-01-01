@@ -25,4 +25,4 @@ RUN emerge \
       app-arch/cpio \
       app-alternatives/cpio
 
-CMD emaint sync --repo akpall
+CMD ["bash", "-c", "emaint sync --repo akpall && bash"]
