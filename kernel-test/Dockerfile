@@ -3,7 +3,7 @@ FROM gentoo/stage3:latest
 
 COPY --from=portage /var/db/repos/gentoo /var/db/repos/gentoo
 
-RUN gemato update
+RUN getuto
 
 RUN FEATURES="-ipc-sandbox -network-sandbox -pid-sandbox" \
       emerge \
