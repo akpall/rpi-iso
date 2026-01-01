@@ -5,6 +5,7 @@ from nas over nfs.
 
 * What I need to do?
 ** Write gentoo ebuilds for building raspberrypi-sources and raspberrypi-kernel
-** Write docker images for building arm64 kernel on either arm64 or any other ISA
+** Write docker image, which would test building raspberrypi-sources and raspberrypi-kernel
+** Write docker image for building arm64 kernel on either arm64 or any other ISA
 ** Build flatcar linux with raspberrypi-kernel
 ** Setup NAS as pxe server and setup storage on it for nfs
