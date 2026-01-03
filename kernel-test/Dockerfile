@@ -23,6 +23,9 @@ RUN emerge \
       dev-libs/elfutils \
       virtual/libelf \
       app-arch/cpio \
-      app-alternatives/cpio
+      app-alternatives/cpio \
+      sys-apps/dtc \
+      sys-kernel/dracut \
+      sys-kernel/installkernel
 
 CMD ["bash", "-c", "emaint sync --repo akpall && bash"]
