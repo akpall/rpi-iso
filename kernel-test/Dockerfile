@@ -3,29 +3,18 @@ FROM gentoo/stage3:latest
 
 COPY --from=portage /var/db/repos/gentoo /var/db/repos/gentoo
 
-ENV FEATURES="-ipc-sandbox -network-sandbox -pid-sandbox"
+COPY files/etc/portage/package.use /etc/portage/package.use
 
 RUN getuto
 
-RUN emerge \
-      --jobs=$(nproc) \
-      --load-average=$((1+$(nproc))) \
-      --getbinpkg=y \
+ARG EMERGE_FEATURES
+ARG EMERGE_OPTIONS
+
+RUN FEATURES="${EMERGE_FEATURES}" \
+    emerge \
+      ${EMERGE_OPTIONS} \
       app-eselect/eselect-repository
 
 RUN eselect repository add akpall git https://github.com/akpall/gentoo-akpall
-
-# raspberrypi-sources::akpall dependencies
-RUN emerge \
-      --jobs=$(nproc) \
-      --load-average=$((1+$(nproc))) \
-      --getbinpkg=y \
-      dev-libs/elfutils \
-      virtual/libelf \
-      app-arch/cpio \
-      app-alternatives/cpio \
-      sys-apps/dtc \
-      sys-kernel/dracut \
-      sys-kernel/installkernel
 
 CMD ["bash", "-c", "emaint sync --repo akpall && bash"]
