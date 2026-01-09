@@ -4,19 +4,20 @@
 EAPI="8"
 
 ETYPE="sources"
+EXTRAVERSION="-coreos-raspberrypi"
 K_GENPATCHES_VER="0"
 K_SECURITY_UNSUPPORTED="1"
 
 inherit kernel-2
-EXTRAVERSION="-coreos-raspberrypi"
-detect_version
+
+BASE_P=linux-${PV%.*}
 
 RASPBERRYPI_KERNEL_TAG="stable_20250916"
 
 DESCRIPTION="Raspberry Pi kernel sources"
 HOMEPAGE="https://github.com/raspberrypi/linux"
 SRC_URI="https://github.com/raspberrypi/linux/archive/refs/tags/${RASPBERRYPI_KERNEL_TAG}.tar.gz"
-S="${WORKDIR}/linux-${PVR}${EXTRAVERSION}"
+S=${WORKDIR}/${BASE_P}
 KEYWORDS="amd64 arm64"
 PATCH_DIR="${FILESDIR}/${KV_MAJOR}.${KV_MINOR}"
 
@@ -43,7 +44,7 @@ universal_unpack() {
 
 	# We want to rename the unpacked directory to a nice normalised string
 	# bug #762766
-	mv "${WORKDIR}/linux-${RASPBERRYPI_KERNEL_TAG}" "${WORKDIR}/linux-${PVR}${EXTRAVERSION}" || die
+	mv "${WORKDIR}/linux-${RASPBERRYPI_KERNEL_TAG}" "${WORKDIR}/${BASE_P}" || die
 
 	# remove all backup files
 	find . -iname "*~" -exec rm {} \; 2>/dev/null
