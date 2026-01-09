@@ -7,7 +7,11 @@ flatcar-scripts:
 
 flatcar-run:
 	cd scripts && \
-	./run_sdk_container -t
+	./run_sdk_container -t -a arm64
+
+flatcar-remove-container:
+	cd scripts && \
+	./run_sdk_container -a arm64 --rm -- exit
 
 flatcar-update: flatcar-scripts
 	cd scripts && \
