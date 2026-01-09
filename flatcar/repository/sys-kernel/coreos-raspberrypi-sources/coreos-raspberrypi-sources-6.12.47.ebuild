@@ -17,7 +17,7 @@ HOMEPAGE="https://github.com/raspberrypi/linux"
 SRC_URI="https://github.com/raspberrypi/linux/archive/refs/tags/${RASPBERRYPI_KERNEL_TAG}.tar.gz"
 S="${WORKDIR}/linux-${PVR}-raspberrypi"
 KEYWORDS="amd64 arm64"
-PATCH_DIR="${FILESDIR}/${KV_MAJOR}.${KV_PATCH}"
+PATCH_DIR="${FILESDIR}/${KV_MAJOR}.${KV_MINOR}"
 
 # make modules_prepare depends on pahole
 RDEPEND="dev-util/pahole"
