@@ -51,10 +51,3 @@ universal_unpack() {
 	# remove all backup files
 	find . -iname "*~" -exec rm {} \; 2>/dev/null
 }
-
-src_prepare() {
-	local patch
-	eapply "${WORKDIR}/patches"
-
-	default
-}
