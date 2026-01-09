@@ -19,6 +19,7 @@ HOMEPAGE="https://github.com/raspberrypi/linux"
 SRC_URI="https://github.com/raspberrypi/linux/archive/refs/tags/${RASPBERRYPI_KERNEL_TAG}.tar.gz"
 S=${WORKDIR}/${BASE_P}
 KEYWORDS="amd64 arm64"
+PATCH_DIR="${FILESDIR}/${KV_MAJOR}.${KV_MINOR}"
 
 # make modules_prepare depends on pahole
 RDEPEND="dev-util/pahole"
@@ -51,7 +52,7 @@ universal_unpack() {
 
 src_prepare() {
 	local patch
-	eapply "${FILESDIR}/${KV_MAJOR}.${KV_MINOR}"
+	eapply "${WORKDIR}/patches"
 
 	default
 }
