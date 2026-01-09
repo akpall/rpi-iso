@@ -1,34 +1,26 @@
 # Copyright 2014 CoreOS, Inc.
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI="8"
+
 ETYPE="sources"
-
-# -rc releases should be versioned L.M_rcN
-# Final releases should be versioned L.M.N, even for N == 0
-
-# Only needed for RCs
-K_BASE_VER="5.15"
+EXTRAVERSION="raspberrypi"
+K_GENPATCHES_VER="0"
+K_SECURITY_UNSUPPORTED="1"
 
 inherit kernel-2
-EXTRAVERSION="-flatcar"
-detect_version
 
-DESCRIPTION="Full sources for the CoreOS Linux kernel"
-HOMEPAGE="http://www.kernel.org"
-if [[ "${PV%%_rc*}" != "${PV}" ]]; then
-	SRC_URI="https://git.kernel.org/torvalds/p/v${KV%-coreos}/v${OKV} -> patch-${KV%-coreos}.patch ${KERNEL_BASE_URI}/linux-${OKV}.tar.xz"
-	PATCH_DIR="${FILESDIR}/${KV_MAJOR}.${KV_PATCH}"
-else
-	SRC_URI="${KERNEL_URI}"
-	PATCH_DIR="${FILESDIR}/${KV_MAJOR}.${KV_MINOR}"
-fi
+RASPBERRYPI_KERNEL_TAG="stable_20250916"
+
+DESCRIPTION="Raspberry Pi kernel sources"
+HOMEPAGE="https://github.com/raspberrypi/linux"
+SRC_URI="https://github.com/raspberrypi/linux/archive/refs/tags/${RASPBERRYPI_KERNEL_TAG}.tar.gz"
+S="${WORKDIR}/linux-${PVR}-raspberrypi"
+KEYWORDS="amd64 arm64"
+PATCH_DIR="${FILESDIR}/${KV_MAJOR}.${KV_PATCH}"
 
 # make modules_prepare depends on pahole
 RDEPEND="dev-util/pahole"
-
-KEYWORDS="amd64 arm64"
-IUSE=""
 
 # XXX: Note we must prefix the patch filenames with "z" to ensure they are
 # applied _after_ a potential patch-${KV}.patch file, present when building a
@@ -44,3 +36,14 @@ UNIPATCH_LIST="
 	${PATCH_DIR}/z0007-arm64-add-kernel-config-option-to-lock-down-when.patch \
 	${PATCH_DIR}/z0008-tools-hv-fix-cross-compilation-for-ARM64.patch \
 "
+
+universal_unpack() {
+	unpack ${RASPBERRYPI_KERNEL_TAG}.tar.gz
+
+	# We want to rename the unpacked directory to a nice normalised string
+	# bug #762766
+	mv "${WORKDIR}/linux-${RASPBERRYPI_KERNEL_TAG}" "${WORKDIR}/linux-${PVR}-raspberrypi" || die
+
+	# remove all backup files
+	find . -iname "*~" -exec rm {} \; 2>/dev/null
+}
