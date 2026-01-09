@@ -4,11 +4,11 @@
 EAPI="8"
 
 ETYPE="sources"
-EXTRAVERSION="coreos-raspberrypi"
 K_GENPATCHES_VER="0"
 K_SECURITY_UNSUPPORTED="1"
 
 inherit kernel-2
+EXTRAVERSION="-coreos-raspberrypi"
 detect_version
 
 RASPBERRYPI_KERNEL_TAG="stable_20250916"
