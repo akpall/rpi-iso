@@ -2,6 +2,19 @@ PI_VERSION := 6.12.47
 
 flatcar: flatcar-scripts flatcar-update
 
+flatcar-latest-stable:
+	LATEST_STABLE=$$( \
+	  git ls-remote --tags "https://github.com/flatcar/scripts.git" | \
+	    sed -n 's/.*\(stable-[0-9\.]\+$$\)/\1/p' | \
+	      tail -n1 \
+	) && \
+	  if [ ! -d scripts ]; then \
+	    git clone --depth 1 --branch $${LATEST_STABLE} https://github.com/flatcar/scripts.git; \
+	  else \
+	    cd scripts; \
+	    git pull . $${LATEST_STABLE}; \
+	  fi
+
 flatcar-scripts:
 	if [ ! -d scripts ]; then \
 	  git clone https://github.com/flatcar/scripts.git; \
