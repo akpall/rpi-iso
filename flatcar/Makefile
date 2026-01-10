@@ -1,6 +1,6 @@
 PI_VERSION := 6.12.47
 
-flatcar: flatcar-scripts flatcar-update
+flatcar: flatcar-latest-stable
 
 flatcar-latest-stable:
 	LATEST_STABLE=$$( \
@@ -15,11 +15,6 @@ flatcar-latest-stable:
 	    git pull . $${LATEST_STABLE}; \
 	  fi
 
-flatcar-scripts:
-	if [ ! -d scripts ]; then \
-	  git clone https://github.com/flatcar/scripts.git; \
-	fi
-
 flatcar-run:
 	cd scripts && \
 	./run_sdk_container -t -a arm64
@@ -28,13 +23,7 @@ flatcar-remove-container:
 	cd scripts && \
 	./run_sdk_container -a arm64 --rm -- exit
 
-flatcar-update: flatcar-scripts
-	cd scripts && \
-	git pull . && \
-	branch="$$(git tag | grep '^stable-[0-9.]*$$' | sort | tail -n1)"; \
-	git checkout "$$branch"
-
-flatcar-custom: flatcar-update
+flatcar-custom: flatcar-latest-stable
 	cp \
 	  -R \
 	  repository/sys-kernel/coreos-raspberrypi-sources \
