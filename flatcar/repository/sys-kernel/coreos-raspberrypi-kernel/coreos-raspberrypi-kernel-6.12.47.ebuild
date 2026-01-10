@@ -46,7 +46,7 @@ DEPEND="
 	sys-fs/mdadm
 	sys-fs/xfsprogs
 	>=sys-kernel/bootengine-0.0.38-r37:=
-	>=sys-kernel/coreos-firmware-20180103-r1:=
+	>=sys-kernel/coreos-raspberrypi-firmware-20180103-r1:=
 	virtual/udev
 	amd64? ( sys-firmware/intel-microcode:= )
 "
