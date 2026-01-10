@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -45,7 +45,7 @@ BDEPEND="initramfs? ( app-arch/cpio )
 	compress-zstd? ( app-arch/zstd )"
 
 # Flatcar: depend on Kernel source and modules
-DEPEND=">=sys-kernel/coreos-modules-6.1:=
+DEPEND=">=sys-kernel/coreos-raspberrypi-modules-6.1:=
 	sys-kernel/coreos-sources"
 #add anything else that collides to this
 RDEPEND="!savedconfig? (
@@ -356,7 +356,7 @@ src_install() {
 	#
 	# Don't save the firmware config to /etc/portage/savedconfig/
 	# if we use !savedconfig; then
-	# 	save_config ${PN}.conf
+	#	save_config ${PN}.conf
 	# fi
 	rm ${PN}.conf || die
 	insinto /lib/firmware/
