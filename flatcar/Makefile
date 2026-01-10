@@ -1,3 +1,5 @@
+PI_VERSION := 6.12.47
+
 flatcar: flatcar-scripts flatcar-update
 
 flatcar-scripts:
@@ -47,6 +49,23 @@ flatcar-custom: flatcar-update
 	  -i \
 	  's#sys-kernel/coreos-kernel#sys-kernel/coreos-raspberrypi-kernel#g' \
 	  scripts/sdk_container/src/third_party/coreos-overlay/coreos-base/coreos/coreos-0.0.1.ebuild
+
+	sed \
+	  -i \
+	  's#sys-kernel/coreos-firmware#sys-kernel/coreos-raspberrypi-firmware#g' \
+	  scripts/sdk_container/src/third_party/coreos-overlay/coreos-base/coreos/coreos-0.0.1.ebuild
+
+	cd scripts/sdk_container/src/third_party/coreos-overlay/app-emulation/hv-daemons; \
+	  if [ ! -h hv-daemons-${PI_VERSION}.ebuild ]; then \
+	    ln -s \
+	      hv-daemons-9999.ebuild \
+	      hv-daemons-6.12.47.ebuild; \
+	  fi
+
+	sed \
+	  -i \
+	  's#sys-kernel/coreos-kernel#sys-kernel/coreos-raspberrypi-kernel#g' \
+	  scripts/sdk_container/src/third_party/coreos-overlay/virtual/linux-sources/linux-sources-2-r2.ebuild
 
 clean:
 	rm -rf scripts
