@@ -50,5 +50,10 @@ flatcar-custom: flatcar-update
 	  's/coreos-sources/coreos-raspberrypi-sources/g' \
 	  scripts/sdk_container/src/third_party/coreos-overlay/sys-kernel/coreos-firmware/coreos-firmware-99999999.ebuild
 
+	sed \
+	  -i \
+	  's#sys-kernel/coreos-kernel#sys-kernel/coreos-raspberrypi-kernel#g' \
+	  scripts/sdk_container/src/third_party/coreos-overlay/coreos-base/coreos/coreos-0.0.1.ebuild
+
 clean:
 	rm -rf scripts
