@@ -23,16 +23,9 @@ flatcar-custom: flatcar-update
 	cp \
 	  -R \
 	  repository/sys-kernel/coreos-raspberrypi-sources \
-	  scripts/sdk_container/src/third_party/coreos-overlay/sys-kernel
-
-	cp \
-	  -R \
 	  repository/sys-kernel/coreos-raspberrypi-modules \
-	  scripts/sdk_container/src/third_party/coreos-overlay/sys-kernel
-
-	cp \
-	  -R \
 	  repository/sys-kernel/coreos-raspberrypi-kernel \
+	  repository/sys-kernel/coreos-raspberrypi-firmware \
 	  scripts/sdk_container/src/third_party/coreos-overlay/sys-kernel
 
 	sed \
