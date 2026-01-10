@@ -15,7 +15,7 @@ RASPBERRYPI_KERNEL_TAG="stable_20250916"
 DESCRIPTION="Raspberry Pi kernel sources"
 HOMEPAGE="https://github.com/raspberrypi/linux"
 SRC_URI="https://github.com/raspberrypi/linux/archive/refs/tags/${RASPBERRYPI_KERNEL_TAG}.tar.gz"
-S="${WORKDIR}/linux-${KV_FULL}${EXTRAVERSION}"
+S="${WORKDIR}/linux-${KV_FULL}"
 KEYWORDS="amd64 arm64"
 PATCH_DIR="${FILESDIR}/${KV_MAJOR}.${KV_MINOR}"
 
@@ -44,7 +44,7 @@ universal_unpack() {
 
 	# We want to rename the unpacked directory to a nice normalised string
 	# bug #762766
-	mv "${WORKDIR}/linux-${RASPBERRYPI_KERNEL_TAG}" "${WORKDIR}/linux-${KV_FULL}${EXTRAVERSION}" || die
+	mv "${WORKDIR}/linux-${RASPBERRYPI_KERNEL_TAG}" "${WORKDIR}/linux-${KV_FULL}" || die
 
 	cd "${S}" || die
 
