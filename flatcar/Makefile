@@ -1,7 +1,7 @@
 PI_VERSION := 6.12.47
 FLATCAR_SCRIPTS_GIT := https://github.com/flatcar/scripts.git
 
-flatcar: flatcar-scripts
+flatcar: flatcar-scripts flatcar-update
 
 flatcar-scripts:
 	@ \
@@ -18,13 +18,14 @@ flatcar-scripts:
 	fi
 .PHONY: flatcar-scripts
 
-flatcar-update:
+flatcar-update: flatcar-scripts
 	@ \
 	cd flatcar-scripts && \
 	if ! git branch --format='%(refname:short)' | grep -q 'stable-akpall'; then \
-	  echo "Creating stable-latest branch" ** \
+	  echo "Creating stable-latest branch" && \
 	  git branch stable-latest origin/stable-latest; \
 	fi && \
+	git branch --set-upstream-to=origin/stable-latest stable-latest && \
 	if [ $$(git branch --show-current) == "stable-latest" ]; then \
 	  echo "ERROR: branch 'stable-latest' must not be checked out" && \
 	  exit 1; \
