@@ -1,27 +1,33 @@
 PI_VERSION := 6.12.47
+FLATCAR_SCRIPTS_GIT := https://github.com/flatcar/scripts.git
 
-flatcar: flatcar-latest-stable
+flatcar: flatcar-scripts
 
-flatcar-latest-stable:
-	LATEST_STABLE=$$( \
-	  git ls-remote --tags "https://github.com/flatcar/scripts.git" | \
-	    sed -n 's/.*\(stable-[0-9\.]\+$$\)/\1/p' | \
-	      tail -n1 \
-	) && \
-	  if [ ! -d scripts ]; then \
-	    git clone --depth 1 --branch $${LATEST_STABLE} https://github.com/flatcar/scripts.git; \
-	  else \
-	    cd scripts; \
-	    git pull . $${LATEST_STABLE}; \
-	  fi
+flatcar-scripts:
+	@ \
+	if [ ! -d flatcar-scripts ]; then \
+	  echo "Cloning git@github.com:akpall/flatcar-scripts.git" && \
+	  git clone --branch stable-akpall git@github.com:akpall/flatcar-scripts.git && \
+	  git branch --set-upstream-to=origin stable-latest; \
+	fi
+
+	@ \
+	cd flatcar-scripts && \
+	if ! git remote | grep -q "^flatcar$$"; then \
+	  echo "Adding flatcar remote" && \
+	  git remote add flatcar ${FLATCAR_SCRIPTS_GIT}; \
+	fi
+.PHONY: flatcar-scripts
 
 flatcar-run:
 	cd scripts && \
 	./run_sdk_container -t -a arm64
+.PHONY: flatcar-run
 
 flatcar-remove-container:
 	cd scripts && \
 	./run_sdk_container -a arm64 --rm -- exit
+.PHONY: flatcar-remove-container
 
 flatcar-custom: flatcar-latest-stable
 	cp \
@@ -68,6 +74,8 @@ flatcar-custom: flatcar-latest-stable
 	  -i \
 	  's#sys-kernel/coreos-kernel#sys-kernel/coreos-raspberrypi-kernel#g' \
 	  scripts/sdk_container/src/third_party/coreos-overlay/virtual/linux-sources/linux-sources-2-r2.ebuild
+.PHONY: flatcar-custom
 
 clean:
-	rm -rf scripts
+	rm -rf flatcar-scripts
+.PHONY: clean
