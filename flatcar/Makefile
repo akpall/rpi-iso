@@ -7,8 +7,7 @@ flatcar-scripts:
 	@ \
 	if [ ! -d flatcar-scripts ]; then \
 	  echo "Cloning git@github.com:akpall/flatcar-scripts.git" && \
-	  git clone --branch stable-akpall git@github.com:akpall/flatcar-scripts.git && \
-	  git branch --set-upstream-to=origin stable-latest; \
+	  git clone --branch stable-akpall git@github.com:akpall/flatcar-scripts.git; \
 	fi
 
 	@ \
