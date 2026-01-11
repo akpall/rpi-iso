@@ -18,6 +18,23 @@ flatcar-scripts:
 	fi
 .PHONY: flatcar-scripts
 
+flatcar-update:
+	@ \
+	cd flatcar-scripts && \
+	if ! git branch --format='%(refname:short)' | grep -q 'stable-akpall'; then \
+	  echo "Creating stable-latest branch" ** \
+	  git branch stable-latest origin/stable-latest; \
+	fi && \
+	LATEST_STABLE=$$( \
+	  git ls-remote --tags "${FLATCAR_SCRIPTS_GIT}" | \
+	    sed -n 's/.*\(stable-[0-9\.]\+$$\)/\1/p' | \
+	      tail -n1 \
+	) && \
+	git fetch flatcar && \
+	git branch -f stable-latest "$${LATEST_STABLE}"
+
+.PHONY: flatcar-update
+
 flatcar-run:
 	cd scripts && \
 	./run_sdk_container -t -a arm64
