@@ -35,8 +35,9 @@ flatcar-update:
 		tail -n1 \
 	  ) && \
 	  git fetch flatcar && \
-	  echo "Setting branch 'stable-latest' to ""$${LATEST_STABLE}"; \
-	  git branch -f stable-latest "$${LATEST_STABLE}"; \
+	  echo "Setting branch 'stable-latest' to ""$${LATEST_STABLE}" && \
+	  git branch -f stable-latest "$${LATEST_STABLE}" && \
+	  git push origin stable-latest:stable-latest; \
 	fi
 .PHONY: flatcar-update
 
