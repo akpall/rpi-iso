@@ -25,14 +25,19 @@ flatcar-update:
 	  echo "Creating stable-latest branch" ** \
 	  git branch stable-latest origin/stable-latest; \
 	fi && \
-	LATEST_STABLE=$$( \
-	  git ls-remote --tags "${FLATCAR_SCRIPTS_GIT}" | \
-	    sed -n 's/.*\(stable-[0-9\.]\+$$\)/\1/p' | \
-	      tail -n1 \
-	) && \
-	git fetch flatcar && \
-	git branch -f stable-latest "$${LATEST_STABLE}"
-
+	if [ $$(git branch --show-current) == "stable-latest" ]; then \
+	  echo "ERROR: branch 'stable-latest' must not be checked out" && \
+	  exit 1; \
+	else \
+	  LATEST_STABLE=$$( \
+	    git ls-remote --tags "${FLATCAR_SCRIPTS_GIT}" | \
+	      sed -n 's/.*\(stable-[0-9\.]\+$$\)/\1/p' | \
+		tail -n1 \
+	  ) && \
+	  git fetch flatcar && \
+	  echo "Setting branch 'stable-latest' to ""$${LATEST_STABLE}"; \
+	  git branch -f stable-latest "$${LATEST_STABLE}"; \
+	fi
 .PHONY: flatcar-update
 
 flatcar-run:
