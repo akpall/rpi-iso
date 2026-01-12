@@ -43,12 +43,12 @@ flatcar-update: flatcar-scripts
 .PHONY: flatcar-update
 
 flatcar-run:
-	cd scripts && \
+	cd flatcar-scripts && \
 	./run_sdk_container -t -a arm64
 .PHONY: flatcar-run
 
 flatcar-remove-container:
-	cd scripts && \
+	cd flatcar-scripts && \
 	./run_sdk_container -a arm64 --rm -- exit
 .PHONY: flatcar-remove-container
 
