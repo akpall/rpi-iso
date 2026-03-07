@@ -1,0 +1,4 @@
+net-misc/curl ssl
+sys-apps/util-linux pam
+net-libs/libmicrohttpd -eventfd
+sys-kernel/raspberrypi-kernel -initramfs

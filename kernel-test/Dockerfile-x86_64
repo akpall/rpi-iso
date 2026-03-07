@@ -7,16 +7,28 @@ COPY files/etc/portage/package.use /etc/portage/package.use
 
 RUN getuto
 
-ARG EMERGE_FEATURES
+ARG FEATURES
 ARG EMERGE_OPTIONS
 
-RUN FEATURES="${EMERGE_FEATURES}" \
-    emerge \
+ENV FEATURES=${FEATURES}
+ENV EMERGE_OPTIONS=${EMERGE_OPTIONS}
+
+RUN emerge \
       ${EMERGE_OPTIONS} \
       app-eselect/eselect-repository \
+      sys-devel/crossdev \
       app-portage/gentoolkit
 
 RUN eselect repository add akpall git https://github.com/akpall/gentoo-akpall
+RUN eselect repository enable crossdev
+
+RUN crossdev -t aarch64-linux-gnu --stable
+
+RUN ln -s \
+      /etc/portage/repos.conf/ \
+      /usr/aarch64-linux-gnu/etc/portage/repos.conf
+
+COPY package.use.x86_64 /usr/aarch64-linux-gnu/etc/portage/package.use
 
 ENTRYPOINT ["bash", "-c", "emaint sync --repo akpall && exec \"$@\"", "--"]
 CMD ["bash"]
